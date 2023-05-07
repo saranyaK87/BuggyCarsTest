@@ -50,4 +50,9 @@ public class HomePage extends BasePage {
         profileLink.click();
         return new ProfilePage(driver);
     }
+
+    public PopularMakePage getPopularMakePage () {
+        PopularMakePage page = new PopularMakePage(driver);
+        return page;
+    }
 }
