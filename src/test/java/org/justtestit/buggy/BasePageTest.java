@@ -58,6 +58,7 @@ public class BasePageTest {
         boolean runRemote = true;
         if(runRemote){
             initRemoteDriver();
+            return;
         }
         initLocalDriver();
     }
