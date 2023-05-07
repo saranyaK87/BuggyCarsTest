@@ -9,6 +9,12 @@ pipeline {
             steps {
                 sh 'mvn clean test'
             }
+             post {
+                    always {
+                      // Publish the TestNG report
+                      junit 'target/surefire-reports/*.xml'
+                    }
+                  }
         }
     }
 }
