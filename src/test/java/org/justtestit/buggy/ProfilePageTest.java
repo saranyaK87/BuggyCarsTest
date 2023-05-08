@@ -1,5 +1,6 @@
 package org.justtestit.buggy;
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -19,5 +20,12 @@ public class ProfilePageTest extends BasePageTest {
                 prop.getProperty("age"),prop.getProperty("address"),prop.getProperty("phone"),
                 prop.getProperty("hobby")).equals("The profile has been saved successful"),"Profile Update failed - Please check!");
 
+    }
+
+    @Test
+    public void getToHomePage () {
+        OverAllPage overAllPageContent = homePage.clickOverAllRatingImg();
+        driver.findElement(By.xpath("//a[contains(text(),'Buggy Rating')]")).click();
+        Assert.assertTrue(driver.findElement(By.xpath("//div[@class='center-block']//img")).isDisplayed());
     }
 }

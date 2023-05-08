@@ -56,7 +56,7 @@ public class BasePageTest {
 
     private static void initDriver(){
         boolean runRemote = true;
-        /*if(runRemote){
+/*        if(runRemote){
             initRemoteDriver();
             return;
         }*/

@@ -15,21 +15,21 @@ public class PopularMakePageTest extends BasePageTest {
         totalVoteNumber = homePage.getPopularMakePage().getExpectedNumberOfVotes();
         homePage.getPopularMakePage().clickPopularMakeLogo();
             int modelVoteSum = homePage.getPopularMakePage().getActualNumberOfVotes();
-       // driver. navigate(). back();
             assertEquals(totalVoteNumber, modelVoteSum);
 
         }
         @Test(priority=2)
         public void verifyPopularMake() {
             driver.get(prop.getProperty("appurl"));
-            homePage = new HomePage(driver);
-            int totalVoteNumber = homePage.getPopularMakePage().getExpectedNumberOfVotes();
+            int totalVoteNumber = homePage.getPopularMakeExpectedNumberOfVotes();
             OverAllPage overAllPageContent = homePage.clickOverAllRatingImg();
-            AbstractMap.SimpleEntry<String, Integer> maxVoteMakeValue = homePage.getOverAllPage().getTotalVoteCounts();
+            AbstractMap.SimpleEntry<String, Integer> maxVoteMakeValue = null;
+            try {
+                maxVoteMakeValue = overAllPageContent.getTotalVoteCounts();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            //AbstractMap.SimpleEntry<String, Integer> maxVoteMakeValue = homePage.getOverAllPage().getTotalVoteCounts();
             assertEquals(totalVoteNumber, maxVoteMakeValue.getValue());
         }
-/*        @Test
-        public void verifyPopularModel() {
-            OverAllPage overAllPageContent = homePage.clickOverAllRatingImg();
-        }*/
     }

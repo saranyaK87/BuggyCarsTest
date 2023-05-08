@@ -1,22 +1,16 @@
 package org.justtestit.buggy;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
 import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.lang.Object;
 
 public class OverAllPage extends BasePage {
     @FindBy(xpath = "//div[@class='pull-xs-right' and contains(.,'page')]")
@@ -38,68 +32,83 @@ public class OverAllPage extends BasePage {
         nextPage.click();
     }
 
-    public AbstractMap.SimpleEntry<String, Integer> getTotalVoteCounts () {
-
+    public AbstractMap.SimpleEntry<String, Integer> getTotalVoteCounts() throws InterruptedException {
         String makeNameOnThisRow;
         int voteOnThisRow;
         String maxVoteMake = "";
         int maxVoteValue = 0;
-
+        int rowCount = 0;
         ArrayList<AbstractMap.SimpleEntry<String, Integer>> arrayList = new ArrayList<AbstractMap.SimpleEntry<String, Integer>>();
-
         String textOfTotalPage = totalPages.getText();
         //Get Number of pages
-        int totalPgs = Integer.parseInt(
-                textOfTotalPage.substring(textOfTotalPage.lastIndexOf("of ")+3));
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-
+        int totalPgs = Integer.parseInt(textOfTotalPage.substring(textOfTotalPage.lastIndexOf("of ")+3));
         // Iterate through each Page in OverAllPage
-        for (int a = 1; a <= totalPgs; a++) {
+        for (int a = 1; a <= totalPgs; a++)
+        {
+            System.out.println("I'm in Page :"+a);
             String[] tmpText = totalPages.getText().substring(textOfTotalPage.lastIndexOf("page ")+5).split(" of ");
             int currentPageNumber = Integer.parseInt(tmpText[0]);
-
-            //driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
-            WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@class='cars table table-hover']/tbody/tr[1]")));
-
-            if (currentPageNumber <= totalPgs){
+            if (currentPageNumber <= totalPgs)
+            {
                 List<WebElement> rowsOnThisPage = driver.findElements(By.xpath("//table[@class='cars table table-hover']/tbody/tr"));
-
-            //Get Next Page
-            //Iterate Each Row in this page
-            for (int i = 1; i <= rowsOnThisPage.size(); i++) {
-
-
-
-                makeNameOnThisRow = driver.findElement(By.xpath("//table[@class='cars table table-hover']/tbody/tr[" + i + "]/td[2]")).getText();
-                voteOnThisRow = Integer.parseInt(driver.findElement(By.xpath("//table[@class='cars table table-hover']/tbody/tr[" + i + "]/td[5]")).getText());
-
-                Boolean savingNewKeyValue = false;
-
-                //If MakeName matches a Key, then add vote count to its value
-                for (int x = 0; x < arrayList.size(); x++) {
-                    if (arrayList.get(x).getKey().equalsIgnoreCase(makeNameOnThisRow)) {
-                        arrayList.get(x).setValue(voteOnThisRow + arrayList.get(x).getValue());
-                        int currentVoteValue = arrayList.get(x).getValue();
-                        if (currentVoteValue > maxVoteValue) {
-                            maxVoteValue = currentVoteValue;
-                            maxVoteMake = arrayList.get(x).getKey();
+                rowCount = rowsOnThisPage.size();
+                System.out.println("Row count is "+rowCount);
+                //Get Next Page
+                //Iterate Each Row in this page
+                for (int i = 1; i <= rowCount; i++)
+                {
+                    System.out.println("I'm in row :"+i);
+                    try {
+                        makeNameOnThisRow = driver.findElement(By.xpath("//table[@class='cars table table-hover']/tbody/tr[" + i + "]/td[2]")).getText();
+                        voteOnThisRow = Integer.parseInt(driver.findElement(By.xpath("//table[@class='cars table table-hover']/tbody/tr[" + i + "]/td[5]")).getText());
+                        System.out.println("Make name in this row "+makeNameOnThisRow);
+                        System.out.println("voteOnThisRow "+voteOnThisRow);
+                    }
+                    catch (StaleElementReferenceException e){
+                        makeNameOnThisRow = driver.findElement(By.xpath("//table[@class='cars table table-hover']/tbody/tr[" + i + "]/td[2]")).getText();
+                        voteOnThisRow = Integer.parseInt(driver.findElement(By.xpath("//table[@class='cars table table-hover']/tbody/tr[" + i + "]/td[5]")).getText());
+                    }
+                    Boolean savingNewKeyValue = false;
+                    //If MakeName matches a Key, then add vote count to its value
+                    for (int x = 0; x < arrayList.size(); x++)
+                    {
+                        if (arrayList.get(x).getKey().equalsIgnoreCase(makeNameOnThisRow))
+                        {
+                            arrayList.get(x).setValue(voteOnThisRow + arrayList.get(x).getValue());
+                            int currentVoteValue = arrayList.get(x).getValue();
+                            if (currentVoteValue > maxVoteValue)
+                            {
+                                maxVoteValue = currentVoteValue;
+                                maxVoteMake = arrayList.get(x).getKey();
+                            }
+                            savingNewKeyValue = true;
+                            break;
                         }
-                        savingNewKeyValue = true;
-                        break;
+                    }
+                    if (!savingNewKeyValue) {
+                        arrayList.add(new AbstractMap.SimpleEntry(makeNameOnThisRow, voteOnThisRow));
+                        savingNewKeyValue = false;
                     }
                 }
-                if (!savingNewKeyValue) {
-                    arrayList.add(new AbstractMap.SimpleEntry(makeNameOnThisRow, voteOnThisRow));
-                    savingNewKeyValue = false;
-                }
+                //Click next button
+                nextPage.click();
+/*
+                int remainingPages = totalPgs - currentPageNumber;
+                System.out.println("Max Vote so far - " + maxVoteValue);
+                System.out.println("Popular Make so far - " + maxVoteMake);
+                System.out.println("We have got - " + remainingPages + "to go!");
+                Wait<WebDriver> wait = new FluentWait<>(driver)
+                        .withTimeout(Duration.ofSeconds(20))
+                        .pollingEvery(Duration.ofSeconds(20))
+                        .ignoring(NoSuchElementException.class);
+
+                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@class='cars table table-hover']/tbody/tr")));*/
+                Thread.sleep(2000);
             }
-            //Click next button
-             nextPage.click();
         }
-    }
         AbstractMap.SimpleEntry<String, Integer> maxMakeVote = new AbstractMap.SimpleEntry<>(maxVoteMake, maxVoteValue);
         return maxMakeVote;
     }
+
 
 }

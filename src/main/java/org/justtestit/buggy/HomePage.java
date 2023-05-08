@@ -4,8 +4,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.lang.management.ManagementPermission;
+import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +61,18 @@ public class HomePage extends BasePage {
         return loginBtn.isDisplayed();
     }
 
+    public void clickHomePagePopularMakeLogo(){
+        driver.findElement(By.xpath("//div[@class='col-md-4']//h2[contains(text(), 'Popular Make')]/following-sibling::a//img")).click();
+        driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
+    }
+
+    public int getPopularMakeExpectedNumberOfVotes (){
+        driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
+        WebElement number = driver.findElement(By.xpath("//*[text() = 'Popular Make']/..//h3//small[contains(text(),'votes')]"));
+        int totalVoteNumber = Integer.parseInt(number.getText().replaceAll("[^0-9]", ""));
+        System.out.println("totalVoteNumber = "+totalVoteNumber);
+        return totalVoteNumber;
+    }
     public String getProfileName(){
         return profileName.getText();
     }
