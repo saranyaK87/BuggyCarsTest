@@ -11,11 +11,11 @@ public class HomePageTest extends BasePageTest {
     public void verifyTitle(){
         Assert.assertTrue(driver.getTitle().equals("Buggy Cars Rating"));
     }
-    @Test
+    @Test(priority=2)
     public void verifyHeaderImage () {
         Assert.assertTrue(driver.findElement(By.xpath("//div[@class='center-block']//img")).isDisplayed());
     }
-    @Test
+    @Test(priority=3)
     public void logOut() {
         homePage.login(prop.getProperty("username"), prop.getProperty("password"));
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);

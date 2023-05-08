@@ -5,7 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.lang.Object;
 
 public class OverAllPage extends BasePage {
     @FindBy(xpath = "//div[@class='pull-xs-right' and contains(.,'page')]")
@@ -54,14 +58,19 @@ public class OverAllPage extends BasePage {
             String[] tmpText = totalPages.getText().substring(textOfTotalPage.lastIndexOf("page ")+5).split(" of ");
             int currentPageNumber = Integer.parseInt(tmpText[0]);
 
-            if (currentPageNumber < totalPgs){
+            //driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+            WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@class='cars table table-hover']/tbody/tr[1]")));
+
+            if (currentPageNumber <= totalPgs){
                 List<WebElement> rowsOnThisPage = driver.findElements(By.xpath("//table[@class='cars table table-hover']/tbody/tr"));
 
             //Get Next Page
             //Iterate Each Row in this page
-            for (int i = 1; i <=
-                    rowsOnThisPage.size(); i++) {
-                driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            for (int i = 1; i <= rowsOnThisPage.size(); i++) {
+
+
+
                 makeNameOnThisRow = driver.findElement(By.xpath("//table[@class='cars table table-hover']/tbody/tr[" + i + "]/td[2]")).getText();
                 voteOnThisRow = Integer.parseInt(driver.findElement(By.xpath("//table[@class='cars table table-hover']/tbody/tr[" + i + "]/td[5]")).getText());
 

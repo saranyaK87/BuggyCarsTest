@@ -19,11 +19,11 @@ public class PopularMakePage extends BasePage {
     }
 
     public int getExpectedNumberOfVotes (){
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.MICROSECONDS);
-        WebElement number = driver.findElement(By.xpath("//small[contains(text(),'votes')]"));
+        driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
+        WebElement number = driver.findElement(By.xpath("//*[text() = 'Popular Make']/..//h3//small[contains(text(),'votes')]"));
         int totalVoteNumber = Integer.parseInt(number.getText().replaceAll("[^0-9]", ""));
+        System.out.println("totalVoteNumber = "+totalVoteNumber);
         return totalVoteNumber;
-
     }
 
     public int getActualNumberOfVotes(){
@@ -38,6 +38,7 @@ public class PopularMakePage extends BasePage {
                     driver.findElement(By.xpath("//table[@class='cars table table-hover']/tbody/tr[" + i + "]/td[4]")).getText());
 
         }
+        System.out.println("totalVoteNumber = "+modelVoteSum);
         return modelVoteSum;
     }
 

@@ -1,10 +1,12 @@
 package org.justtestit.buggy;
 
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import static org.testng.Assert.*;
 
 public class ProfilePageTest extends BasePageTest {
+    @Test
     public void profileUpdate() {
         homePage.login(prop.getProperty("username"), prop.getProperty("password"));
         ProfilePage profilePage = homePage.viewProfile();
