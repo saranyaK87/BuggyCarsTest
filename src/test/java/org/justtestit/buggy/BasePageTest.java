@@ -56,10 +56,10 @@ public class BasePageTest {
 
     private static void initDriver(){
         boolean runRemote = true;
-/*        if(runRemote){
+        if(runRemote){
             initRemoteDriver();
             return;
-        }*/
+        }
         initLocalDriver();
     }
 
@@ -85,7 +85,7 @@ public class BasePageTest {
 
         URL url = null;
         try {
-            url = new URL("https://oauth-ksaranya8-34e3f:643419d3-7a45-441f-af57-3284060972ad@ondemand.us-west-1.saucelabs.com:443/wd/hub");
+            url = new URL("https://oauth-ksaranya8-c897c:8b2773d8-0b6d-42e2-b2ec-dc94a3f27c65@ondemand.us-west-1.saucelabs.com:443/wd/hub");
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

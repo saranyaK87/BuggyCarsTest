@@ -92,18 +92,11 @@ public class OverAllPage extends BasePage {
                 }
                 //Click next button
                 nextPage.click();
-/*
                 int remainingPages = totalPgs - currentPageNumber;
                 System.out.println("Max Vote so far - " + maxVoteValue);
                 System.out.println("Popular Make so far - " + maxVoteMake);
                 System.out.println("We have got - " + remainingPages + "to go!");
-                Wait<WebDriver> wait = new FluentWait<>(driver)
-                        .withTimeout(Duration.ofSeconds(20))
-                        .pollingEvery(Duration.ofSeconds(20))
-                        .ignoring(NoSuchElementException.class);
 
-                wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@class='cars table table-hover']/tbody/tr")));*/
-                Thread.sleep(2000);
             }
         }
         AbstractMap.SimpleEntry<String, Integer> maxMakeVote = new AbstractMap.SimpleEntry<>(maxVoteMake, maxVoteValue);
