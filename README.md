@@ -17,6 +17,8 @@ Selenium Webdriver - Browser automation framework
 Java - Programming Language  
 TestNG - Testing Framework  
 Maven - Build automation tool  
+SauceLab - Testing Platform
+Jenkins - CICD Pipeline
 
 ## Design Patterns
 
