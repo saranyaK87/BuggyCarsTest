@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.concurrent.TimeUnit;
+
 public class RegistrationPage extends BasePage {
     @FindBy(id = "username")
     public WebElement loginID;
@@ -31,6 +33,7 @@ public class RegistrationPage extends BasePage {
         password.sendKeys(registrationEntries.password);
         confirmPassword.sendKeys(registrationEntries.confirmPassword);
         registerBtn.click();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         return result.getText();
     }
 

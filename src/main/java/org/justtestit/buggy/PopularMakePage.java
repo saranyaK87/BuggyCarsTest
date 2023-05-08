@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class PopularMakePage extends BasePage {
@@ -13,8 +13,13 @@ public class PopularMakePage extends BasePage {
         super(driver);
     }
 
-    public int getExpectedNumberOfVotes (){
+    public void clickPopularMakeLogo(){
+        driver.findElement(By.xpath("//div[@class='col-md-4']//h2[contains(text(), 'Popular Make')]/following-sibling::a//img")).click();
+        driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
+    }
 
+    public int getExpectedNumberOfVotes (){
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.MICROSECONDS);
         WebElement number = driver.findElement(By.xpath("//small[contains(text(),'votes')]"));
         int totalVoteNumber = Integer.parseInt(number.getText().replaceAll("[^0-9]", ""));
         return totalVoteNumber;
@@ -36,8 +41,8 @@ public class PopularMakePage extends BasePage {
         return modelVoteSum;
     }
 
-    public void clickPopularMakeLogo(){
-        driver.findElement(By.xpath("//div[@class='col-md-4']//h2[contains(text(), 'Popular Make')]/following-sibling::a//img")).click();
-        driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
-    }
+
+
+
+
 }
